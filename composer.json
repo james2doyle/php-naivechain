@@ -1,26 +1,24 @@
 {
     "name": "Blockchain/Naivechain",
     "type": "library",
-    "description": "An implementation of the naivechain npm package in PHP",
+    "description": "An implementation of block chain inspired by the naivechain npm package in PHP",
     "keywords": [
         "Blockchain",
         "Naivechain"
     ],
     "homepage": "https://github.com/Blockchain/Naivechain",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "James Doyle",
-            "email": "james2doyle@gmail.com",
-            "homepage": "https://github.com/james2doyle",
-            "role": "Developer"
-        }
-    ],
+    "authors": [{
+        "name": "James Doyle",
+        "email": "james2doyle@gmail.com",
+        "homepage": "https://github.com/james2doyle",
+        "role": "Developer"
+    }],
     "require": {
-        "php" : "~5.6|~7.0"
+        "php": "~5.6|~7.0"
     },
     "require-dev": {
-        "phpunit/phpunit" : "~4.0||~5.0||~6.0",
+        "phpunit/phpunit": "~4.0||~5.0||~6.0",
         "squizlabs/php_codesniffer": "^2.3"
     },
     "autoload": {
