@@ -31,5 +31,7 @@ class BlockTest extends TestCase
         $new_block = $block->generateChild('my new block!');
 
         $this->assertEquals(1, $new_block->getIndex());
+        $this->assertEquals($block->getHash(), $new_block->getPreviousHash());
+        $this->assertNotEquals($block->getIndex(), $new_block->getIndex());
     }
 }
