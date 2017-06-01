@@ -62,10 +62,7 @@ class Chain
 
     /**
      * Create the hash for the chain
-     * @param int $index  index of the block
-     * @param string $hash  hash of the block
-     * @param int $timestamp  timestamp of the block
-     * @param string $data  the data to store in the block
+     * @param string $string  the hashable string of fields to use
      * @return string
      */
     private function createHash(string $string)
