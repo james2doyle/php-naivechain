@@ -55,7 +55,7 @@ class ChainTest extends TestCase
 
         $this->chain->createNewBlock('my new block!');
 
-        $badBlock = new Block(2, '0', time(), 'my genesis block!!', '816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7');
+        $badBlock = new Block(2, '0', time(), 'my bad block!!', 'bd38fb1e674b85c8c08fb0e66c3fa24f1abe1aa947870addce78b9fc3c70bf05');
 
         $this->chain->addBlock($badBlock);
 

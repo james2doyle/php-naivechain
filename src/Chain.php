@@ -39,7 +39,7 @@ class Chain
      */
     public function getBlock(int $index)
     {
-        return $this->links[$index];
+        return isset($this->links[$index]) ? $this->links[$index] : $this->links[0];
     }
 
     /**
@@ -88,7 +88,7 @@ class Chain
      */
     private function isValidBlock(Block $block, Block $previousBlock)
     {
-        if ($previousBlock->getHash() !== $block->getPreviousHash()) {
+        if ($block->getIndex() > 0 && $previousBlock->getHash() !== $block->getPreviousHash()) {
             throw new InvalidBlockHashException('Invalid previous hash');
 
             return false;
@@ -139,17 +139,11 @@ class Chain
      */
     public function checkValidity()
     {
-        $blocks = array_slice($this->links, 1);
+        $checks = array_filter($this->getBlocks(), function ($block) {
+            return $this->isValidBlock($block, $this->getBlock($block->getIndex() - 1));
+        });
 
-        $checks = array_map(function ($block) {
-            if ($block->getIndex() - 1 >= 0) {
-                return $this->isValidBlock($block, $this->links[$block->getIndex() - 1]);
-            }
-        }, $blocks);
-
-        return array_reduce($checks, function ($carry, $check) {
-            return $carry + (int)$check;
-        }, 0) === count($blocks);
+        return count($checks) === count($this->getBlocks());
     }
 
     /**
