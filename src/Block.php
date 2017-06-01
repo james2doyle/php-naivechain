@@ -57,6 +57,20 @@ class Block
     }
 
     /**
+     * Generate the next block in the chain using this block
+     * @param string $data  the data to put in the block
+     * @return Block
+     */
+    public function generateChild(string $data)
+    {
+        $nextIndex = $this->getIndex() + 1;
+        $nextTimestamp = time();
+        $nextHash = $this->createHash($nextIndex, $this->getHash(), $nextTimestamp, $data);
+
+        return new self($nextIndex, $this->getHash(), $nextTimestamp, $data, $nextHash);
+    }
+
+    /**
      * Return the index of the block
      * @return int
      */
@@ -99,5 +113,15 @@ class Block
     public function getHash()
     {
         return $this->hash;
+    }
+
+    /**
+     * Create the hash for the chain
+     * @param string $string  the hashable string of fields to use
+     * @return string
+     */
+    private function createHash(string $string)
+    {
+        return hash('sha256', $string);
     }
 }
