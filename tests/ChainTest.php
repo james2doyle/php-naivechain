@@ -17,6 +17,7 @@ class ChainTest extends TestCase
 
         $this->chain = new Chain(new GenesisBlock());
     }
+
     /** @test */
     public function itCanCreateANewChain()
     {
@@ -32,27 +33,19 @@ class ChainTest extends TestCase
     /** @test */
     public function itCanCreateANewBlock()
     {
-        $this->chain->createNewBlock('my new block!');
+        $new_block = $this->chain->createNewBlock('my new block!');
 
         $this->assertCount(2, $this->chain->getBlocks());
+        $this->assertEquals($new_block->getHash(), $this->chain->getLatestBlock()->getHash());
     }
 
     /** @test */
     public function itCanGetABlock()
     {
-        $this->chain->createNewBlock('my new block!');
+        $new_block = $this->chain->createNewBlock('my new block!');
 
         $this->assertNotNull($this->chain->getBlock(1));
-    }
-
-    /** @test */
-    public function itCanValidateTheChain()
-    {
-        $this->chain->createNewBlock('my new block!');
-        $this->chain->createNewBlock('my new new block!');
-        $this->chain->createNewBlock('my newest block!');
-
-        $this->assertTrue($this->chain->checkValidity());
+        $this->assertEquals($new_block->getHash(), $this->chain->getBlock(1)->getHash());
     }
 
     /** @test */
@@ -79,5 +72,26 @@ class ChainTest extends TestCase
         $this->chain->addBlock($this->chain->getBlock(1));
 
         $this->assertTrue($this->chain->checkValidity());
+    }
+
+    /** @test */
+    public function itCanValidateTheChain()
+    {
+        $block_1 = $this->chain->createNewBlock('my new block!');
+        $block_2 = $this->chain->createNewBlock('my new new block!');
+        $block_3 = $this->chain->createNewBlock('my newest block!');
+
+        // chain is good
+        $this->assertTrue($this->chain->checkValidity());
+
+        // hashes are not the same
+        $this->assertNotEquals($this->chain->getBlock(0)->getHash(), $block_1->getHash());
+        $this->assertNotEquals($block_2->getHash(), $block_1->getHash());
+        $this->assertNotEquals($block_3->getHash(), $block_2->getHash());
+
+        // hashes match the origin
+        $this->assertEquals($block_1->getPreviousHash(), $this->chain->getBlock(0)->getHash());
+        $this->assertEquals($block_2->getPreviousHash(), $block_1->getHash());
+        $this->assertEquals($block_3->getPreviousHash(), $block_2->getHash());
     }
 }
